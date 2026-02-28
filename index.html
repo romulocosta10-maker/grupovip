@@ -64,7 +64,7 @@
             justify-content: center; 
             align-items: center;
             /* AUMENTADO O PADDING INFERIOR PARA 130px PARA O MENU NÃO COBRIR O BOTÃO */
-            padding: 10px 15px 130px 15px; 
+            padding: 1px 15px 70px 15px; 
             background-color: var(--bg-main);
             transition: background-color 0.4s ease;
             position: relative;
@@ -95,7 +95,7 @@
 
         .counter {
             position: absolute;
-            top: 15px;
+            top: 10px;
             font-size: 0.75em;
             color: var(--text-muted);
             font-weight: 500;
@@ -105,7 +105,8 @@
         }
 
         .exercise-card h3 {
-            margin: 0 0 10px 0;
+		    margin-top: 22px;
+            margin: 1 10px 0;
             font-size: 1.2em;
             font-weight: 600;
             text-align: center;
@@ -117,14 +118,14 @@
         .exercise-card.completed .video-container { opacity: 0.6; }
 
         .video-container {
-            height: 42vh; /* VÍDEO LEVEMENTE REDUZIDO PARA CABER TUDO */
-            max-height: 420px;
+            height: 100vh; /* VÍDEO LEVEMENTE REDUZIDO PARA CABER TUDO */
+            max-height: 520px;
             aspect-ratio: 9 / 16; 
-            border-radius: 16px;
+            border-radius: 10px;
             overflow: hidden;
             background-color: #000;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            margin-bottom: 15px;
+            margin-bottom: 5px;
             transition: 0.3s;
             position: relative;
             z-index: 10;
@@ -226,10 +227,10 @@
 
         .bottom-nav {
             position: fixed;
-            bottom: 20px;
+            bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
+            width: 100%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
@@ -326,7 +327,7 @@
             <button class="nav-arrow right" onclick="moverSlide(this, 1)">❯</button>
             <div class="counter">5 de 7</div>
             <h3>Cadeira Abdutora</h3>
-            <div class="video-container"><iframe loading="lazy" src="https://www.youtube.com/embed/nabhYLtz8Gg?mute=1" allowfullscreen></iframe></div>
+            <div class="video-container"><iframe loading="lazy" src="https://www.youtube.com/embed/COLOQUE_O_ID_AQUI" allowfullscreen></iframe></div>
             <div class="details"><span class="tag">3 Séries</span><span class="tag highlight">15 Reps</span></div>
             <div class="dica">💡 Abra com explosão, feche controlando o peso.</div>
             <label class="check-container">
@@ -339,7 +340,7 @@
             <button class="nav-arrow right" onclick="moverSlide(this, 1)">❯</button>
             <div class="counter">6 de 7</div>
             <h3>Panturrilha em Pé</h3>
-            <div class="video-container"><iframe loading="lazy" src="https://www.youtube.com/embed/9fIw0ue8iQE?mute=1" allowfullscreen></iframe></div>
+            <div class="video-container"><iframe loading="lazy" src="https://www.youtube.com/embed/COLOQUE_O_ID_AQUI" allowfullscreen></iframe></div>
             <div class="details"><span class="tag">3 Séries</span><span class="tag highlight">15 Reps</span></div>
             <label class="check-container">
                 <input type="checkbox" onchange="marcarConcluido(this)"><span class="icon">⭕</span><span class="text">Marcar como feito</span>
@@ -496,8 +497,9 @@
             <button class="nav-arrow right" onclick="moverSlide(this, 1)">❯</button>
             <div class="counter">2 de 7</div>
             <h3>Cadeira Extensora</h3>
-            <div class="video-container"><iframe loading="lazy" src="https://www.youtube.com/embed/COLOQUE_O_ID_AQUI" allowfullscreen></iframe></div>
-            <div class="details"><span class="tag">3 Séries</span><span class="tag highlight">15 Reps (Drop)</span></div>
+<div class="video-container">
+    <iframe loading="lazy" src="https://www.youtube.com/embed/BmOYMWzmmWM?autoplay=1&mute=1&controls=0&loop=1&playlist=BmOYMWzmmWM" allowfullscreen></iframe>
+</div>            <div class="details"><span class="tag">3 Séries</span><span class="tag highlight">15 Reps (Drop)</span></div>
             <div class="dica">💡 Na última série, faça drop-set até a falha.</div>
             <label class="check-container">
                 <input type="checkbox" onchange="marcarConcluido(this)"><span class="icon">⭕</span><span class="text">Marcar como feito</span>
