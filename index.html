@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Treino Premium + Completo</title>
+    <title>Treino Premium + Completo (Responsivo)</title>
     <style>
         /* ===== RESET E VARIÁVEIS ===== */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
@@ -68,12 +68,13 @@
             height: 100dvh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* muda para flex-start para evitar espremer */
             align-items: center;
-            padding: 5px 15px 70px 15px;
+            padding: 5px 15px 90px 15px; /* padding inferior grande para a bottom-nav */
             background-color: var(--bg-main);
             position: relative;
             transition: background-color 0.4s;
+            overflow-y: auto; /* permite rolagem interna se necessário */
         }
         .exercise-card.completed { background-color: rgba(52, 199, 89, 0.05); }
         .exercise-card.completed h3 { text-decoration: line-through; color: var(--text-muted); }
@@ -86,6 +87,7 @@
             align-items: center;
             margin-bottom: 5px;
             padding: 0 5px;
+            flex-shrink: 0;
         }
         .counter {
             font-size: 0.7em;
@@ -104,8 +106,8 @@
         }
 
         .video-container {
-            height: 40vh;
-            max-height: 450px;
+            height: 30vh; /* reduzido para caber tudo */
+            max-height: 350px;
             aspect-ratio: 9/16;
             border-radius: 20px;
             overflow: hidden;
@@ -113,6 +115,7 @@
             box-shadow: 0 8px 20px var(--shadow);
             margin: 5px 0;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
         .video-container.fullscreen-video {
             position: fixed;
@@ -137,6 +140,7 @@
             gap: 8px;
             margin: 5px 0;
             flex-wrap: wrap;
+            flex-shrink: 0;
         }
         .tag {
             background: var(--nav-bg);
@@ -163,6 +167,7 @@
             border-left: 3px solid var(--primary);
             margin: 5px 0;
             backdrop-filter: blur(10px);
+            flex-shrink: 0;
         }
 
         /* Barra de ações do exercício (checkbox, carga, cronômetro) */
@@ -175,6 +180,7 @@
             margin-top: 5px;
             gap: 5px;
             flex-wrap: wrap;
+            flex-shrink: 0;
         }
         .check-container {
             display: flex;
@@ -191,7 +197,7 @@
             transition: all 0.2s;
             backdrop-filter: blur(10px);
             flex: 1;
-            min-width: 120px;
+            min-width: 100px;
         }
         .check-container input { display: none; }
         .check-container.active-check {
@@ -204,12 +210,13 @@
             align-items: center;
             background: var(--nav-bg);
             border-radius: 16px;
-            padding: 5px 10px;
+            padding: 5px 8px;
             gap: 5px;
             backdrop-filter: blur(10px);
+            flex-shrink: 0;
         }
         .carga-container input {
-            width: 50px;
+            width: 45px;
             text-align: center;
             border: none;
             background: transparent;
@@ -221,10 +228,10 @@
             background: var(--primary);
             border: none;
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            font-size: 1.2em;
+            font-size: 1.1em;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -236,11 +243,12 @@
             color: var(--warning);
             padding: 8px 12px;
             border-radius: 16px;
-            font-size: 0.8em;
+            font-size: 0.75em;
             font-weight: 600;
             cursor: pointer;
             backdrop-filter: blur(10px);
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .timer-active {
             background: var(--warning);
@@ -248,7 +256,10 @@
         }
 
         /* slide final */
-        .slide-final { text-align: center; }
+        .slide-final { 
+            justify-content: center; 
+            text-align: center;
+        }
         .slide-final h2 { font-size: 1.8em; color: var(--primary); margin-bottom: 10px; }
         .btn-finalizar {
             width: 80%;
@@ -263,6 +274,7 @@
             margin-top: 20px;
             cursor: pointer;
             box-shadow: 0 8px 16px var(--success-glow);
+            flex-shrink: 0;
         }
 
         /* setas de navegação */
@@ -272,10 +284,10 @@
             transform: translateY(-50%);
             background: var(--nav-bg);
             border: 1px solid var(--card-border);
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            font-size: 1.2em;
+            font-size: 1.1em;
             color: var(--primary);
             box-shadow: 0 4px 12px var(--shadow);
             cursor: pointer;
@@ -287,54 +299,55 @@
             transition: 0.2s;
         }
         .nav-arrow:active { transform: translateY(-50%) scale(0.9); }
-        .nav-arrow.left { left: 10px; }
-        .nav-arrow.right { right: 10px; }
+        .nav-arrow.left { left: 5px; }
+        .nav-arrow.right { right: 5px; }
 
         /* menu inferior */
         .bottom-nav {
             position: fixed;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: auto;
-            max-width: 500px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background: var(--nav-bg);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
+            border-top: 1px solid var(--card-border);
             display: flex;
             justify-content: space-around;
-            padding: 6px 10px;
-            border-radius: 30px;
+            align-items: center;
+            padding: 6px 4px;
             z-index: 100;
-            box-shadow: 0 10px 30px var(--shadow);
-            gap: 5px;
+            box-shadow: 0 -5px 20px var(--shadow);
             flex-wrap: wrap;
+            gap: 2px;
         }
         .nav-btn {
             background: transparent;
             border: none;
-            width: 45px;
-            height: 45px;
+            min-width: 40px;
+            height: 40px;
             font-weight: 600;
             color: var(--text-muted);
-            border-radius: 50%;
+            border-radius: 20px;
             cursor: pointer;
             transition: 0.2s;
-            font-size: 1.1em;
+            font-size: 0.9em;
+            padding: 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .nav-btn.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 15px var(--primary-glow);
-            transform: translateY(-5px);
+            box-shadow: 0 4px 10px var(--primary-glow);
+            transform: translateY(-2px);
         }
         #resetBtn, #darkModeToggle, #wakeLockBtn, #voiceBtn {
-            width: auto;
-            padding: 0 12px;
-            border-radius: 30px;
+            min-width: auto;
+            padding: 0 10px;
             background: var(--nav-bg);
             color: var(--text-muted);
-            font-size: 0.9em;
+            font-size: 0.85em;
         }
         #voiceBtn.active {
             background: var(--warning);
@@ -387,6 +400,7 @@
             display: flex;
             gap: 10px;
             margin-top: 15px;
+            width: 100%;
         }
         .btn {
             background: var(--primary);
@@ -571,6 +585,7 @@
                 titleDiv.style.display = 'flex';
                 titleDiv.style.alignItems = 'center';
                 titleDiv.style.gap = '10px';
+                titleDiv.style.flexShrink = '0';
                 const h3 = document.createElement('h3');
                 h3.textContent = ex.nome;
                 titleDiv.appendChild(h3);
@@ -961,15 +976,19 @@
                         if (treinoAtivo) moverSlide(treinoAtivo, 1);
                     } else if (transcript.includes('feito')) {
                         const treinoAtivo = document.querySelector('.tab-content.active');
-                        const cardAtual = treinoAtivo?.querySelector('.exercise-card:not(.slide-final)')?.[treinoAtivo.scrollLeft / window.innerWidth];
-                        if (cardAtual) {
+                        if (!treinoAtivo) return;
+                        const currentIndex = Math.round(treinoAtivo.scrollLeft / treinoAtivo.clientWidth);
+                        const cardAtual = treinoAtivo.querySelectorAll('.exercise-card')[currentIndex];
+                        if (cardAtual && !cardAtual.classList.contains('slide-final')) {
                             const cb = cardAtual.querySelector('input[type="checkbox"]');
                             if (cb) { cb.checked = !cb.checked; atualizarCheckboxUI(cb); salvarEstado(); }
                         }
                     } else if (transcript.includes('descanso')) {
-                        const treinoAtivo = document.querySelector('.tab-content.active')?.id.replace('treino', '');
-                        const cardAtual = document.querySelector(`#treino${treinoAtivo} .exercise-card:not(.slide-final)`)?.[document.getElementById(`treino${treinoAtivo}`).scrollLeft / window.innerWidth];
-                        if (cardAtual) {
+                        const treinoAtivo = document.querySelector('.tab-content.active');
+                        if (!treinoAtivo) return;
+                        const currentIndex = Math.round(treinoAtivo.scrollLeft / treinoAtivo.clientWidth);
+                        const cardAtual = treinoAtivo.querySelectorAll('.exercise-card')[currentIndex];
+                        if (cardAtual && !cardAtual.classList.contains('slide-final')) {
                             const timerBtn = cardAtual.querySelector('.timer-btn');
                             if (timerBtn) timerBtn.click();
                         }
