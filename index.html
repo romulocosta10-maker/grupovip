@@ -69,18 +69,18 @@
 
         .exercise-card {
             scroll-snap-align: start; 
-            scroll-snap-stop: always; /* ← GARANTE QUE PASSE APENAS UM POR VEZ */
+            scroll-snap-stop: always; 
             min-width: 100vw;
             height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 10px 15px 85px 15px; /* Base ajustada para o menu inferior */
+            padding: 10px 15px 85px 15px; 
             background-color: var(--bg-main);
             position: relative;
             transition: background-color 0.4s;
-            overflow: hidden; /* Evita rolar internamente e quebrar o layout */
+            overflow: hidden; 
         }
         .exercise-card.completed { background-color: rgba(52, 199, 89, 0.05); }
         .exercise-card.completed h3 { text-decoration: line-through; color: var(--text-muted); }
@@ -110,21 +110,22 @@
             background: var(--primary-glow);
         }
 
-        /* ===== VÍDEO VERTICAL MAXIMIZADO (9:16) ===== */
+        /* ===== VÍDEO VERTICAL CORRIGIDO ===== */
         .video-container {
-            flex: 1; /* Ocupa todo o espaço restante disponível na tela */
+            flex: 1 1 auto; 
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 0; /* Essencial para permitir que o flexbox encolha se precisar */
-            margin: 5px 0;
+            min-height: 200px; /* Garante que o navegador não o encolha para zero */
+            margin: 10px 0;
         }
         iframe {
             height: 100%;
-            max-height: 100%; /* Limita à altura do container pai */
+            max-height: 100%; 
+            width: auto; /* Deixa a largura calcular baseada na altura e aspect-ratio */
+            aspect-ratio: 9 / 16; 
             max-width: 100%;
-            aspect-ratio: 9 / 16; /* Mantém o formato vertical cravado */
             border-radius: 16px;
             border: none;
             box-shadow: 0 6px 15px var(--shadow);
@@ -138,7 +139,7 @@
             gap: 10px;
             margin: 5px 0;
             flex-wrap: wrap;
-            flex-shrink: 0; /* Impede que seja esmagado */
+            flex-shrink: 0; 
         }
         .tag {
             background: var(--nav-bg);
@@ -182,7 +183,7 @@
             margin-top: 10px;
             gap: 8px;
             flex-wrap: nowrap;
-            flex-shrink: 0; /* Impede que os botões desapareçam */
+            flex-shrink: 0; 
         }
         .check-container {
             display: flex;
@@ -361,7 +362,7 @@
             padding: 20px;
             padding-bottom: 100px;
             align-items: center;
-            scroll-snap-type: none; /* Estatísticas não precisam de snap */
+            scroll-snap-type: none; 
         }
         .stats-container {
             width: 100%;
@@ -615,18 +616,32 @@
                 titleDiv.appendChild(editBtn);
                 card.appendChild(titleDiv);
 
-                // Container do Vídeo Maximizado (Flexível)
-                const videoContainer = document.createElement('div');
-                videoContainer.className = 'video-container';
-                const iframe = document.createElement('iframe');
-                if (ex.video) {
-                    iframe.src = `https://www.youtube.com/embed/${ex.video}?mute=1&enablejsapi=1&version=3&rel=0`;
+                // SE O EXERCÍCIO TEM VÍDEO, RENDERIZA. SE NÃO, CRIA UM ESPAÇO PARA MANTER O LAYOUT
+                if (ex.video && ex.video.trim() !== "") {
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'video-container';
+                    
+                    // Tratamento inteligente caso você cole o link inteiro sem querer no modo de edição
+                    let videoId = ex.video.trim();
+                    if (videoId.includes('youtu')) {
+                        const match = videoId.match(/(?:v=|shorts\/|youtu\.be\/|\/embed\/)([^&?]+)/);
+                        if (match) videoId = match[1];
+                    }
+
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&playsinline=1&enablejsapi=1&rel=0`;
+                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                    iframe.allowFullscreen = true;
+                    iframe.loading = 'lazy';
+                    videoContainer.appendChild(iframe);
+                    card.appendChild(videoContainer);
+                } else {
+                    const espacoFlexivel = document.createElement('div');
+                    espacoFlexivel.style.flex = "1 1 auto";
+                    espacoFlexivel.style.width = "100%";
+                    espacoFlexivel.style.minHeight = "100px";
+                    card.appendChild(espacoFlexivel);
                 }
-                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                iframe.allowFullscreen = true;
-                iframe.loading = 'lazy';
-                videoContainer.appendChild(iframe);
-                card.appendChild(videoContainer);
 
                 const details = document.createElement('div');
                 details.className = 'details';
@@ -1016,4 +1031,3 @@
     </script>
 </body>
 </html>
-
