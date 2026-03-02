@@ -69,17 +69,18 @@
 
         .exercise-card {
             scroll-snap-align: start; 
+            scroll-snap-stop: always; /* ← GARANTE QUE PASSE APENAS UM POR VEZ */
             min-width: 100vw;
             height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 10px 15px 85px 15px; /* Base ajustada para o menu */
+            padding: 10px 15px 85px 15px; /* Base ajustada para o menu inferior */
             background-color: var(--bg-main);
             position: relative;
             transition: background-color 0.4s;
-            overflow-y: auto; 
+            overflow: hidden; /* Evita rolar internamente e quebrar o layout */
         }
         .exercise-card.completed { background-color: rgba(52, 199, 89, 0.05); }
         .exercise-card.completed h3 { text-decoration: line-through; color: var(--text-muted); }
@@ -111,23 +112,23 @@
 
         /* ===== VÍDEO VERTICAL MAXIMIZADO (9:16) ===== */
         .video-container {
-            /* Faz o vídeo crescer o máximo possível dentro do espaço disponível */
-            flex: 1 1 auto;
-            min-height: 0;
-            width: auto;
-            max-width: 100%;
-            aspect-ratio: 9 / 16;
-            border-radius: 16px;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 6px 15px var(--shadow);
-            margin: 10px auto;
-            position: relative;
+            flex: 1; /* Ocupa todo o espaço restante disponível na tela */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 0; /* Essencial para permitir que o flexbox encolha se precisar */
+            margin: 5px 0;
         }
         iframe {
-            width: 100%;
             height: 100%;
+            max-height: 100%; /* Limita à altura do container pai */
+            max-width: 100%;
+            aspect-ratio: 9 / 16; /* Mantém o formato vertical cravado */
+            border-radius: 16px;
             border: none;
+            box-shadow: 0 6px 15px var(--shadow);
+            background: #000;
             pointer-events: auto; 
         }
 
@@ -137,7 +138,7 @@
             gap: 10px;
             margin: 5px 0;
             flex-wrap: wrap;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Impede que seja esmagado */
         }
         .tag {
             background: var(--nav-bg);
@@ -180,8 +181,8 @@
             max-width: 500px;
             margin-top: 10px;
             gap: 8px;
-            flex-wrap: nowrap; /* Mantém os botões na mesma linha */
-            flex-shrink: 0;
+            flex-wrap: nowrap;
+            flex-shrink: 0; /* Impede que os botões desapareçam */
         }
         .check-container {
             display: flex;
@@ -360,6 +361,7 @@
             padding: 20px;
             padding-bottom: 100px;
             align-items: center;
+            scroll-snap-type: none; /* Estatísticas não precisam de snap */
         }
         .stats-container {
             width: 100%;
@@ -533,7 +535,7 @@
                         { nome: "Leg Press 45°", video: "yuIdTWl3oJ8", series: 4, reps: 12, dica: "Mantenha os joelhos alinhados. Não estique totalmente no final." },
                         { nome: "Mesa Flexora", video: "BmOYMWzmmWM", series: 4, reps: "12 a 15", dica: "Apoie bem o quadril. Movimento só da perna, sem tranco." },
                         { nome: "Elevação Pélvica", video: "ysWdBc1a1FA", series: 4, reps: 12, dica: "Olhe para frente. Segure 2s em cima esmagando o glúteo." },
-                        { nome: "Afundo no Lugar", video: "tzybc1Hu3Zw", series: 3, reps: "12 / perna", dica: "Tronco inclinado à frente. Força no calcanhar da perna da frente." },
+                        { nome: "Afundo no Lugar", video: "poAnWrA7DSU", series: 3, reps: "12 / perna", dica: "Tronco inclinado à frente. Força no calcanhar da perna da frente." },
                         { nome: "Cadeira Abdutora", video: "nabhYLtz8Gg", series: 3, reps: 15, dica: "Abra com explosão, feche controlando o peso." },
                         { nome: "Panturrilha em Pé", video: "9fIw0ue8iQE", series: 3, reps: 15, dica: "" },
                         { nome: "Cardio Final", video: "VBMqOiiIZAA", series: "10 Min", reps: "", dica: "Esteira Inclinada/Escada" }
@@ -544,23 +546,23 @@
                     exercicios: [
                         { nome: "Puxada na Frente", video: "GjxRBJIOkJk", series: 3, reps: 12, dica: "Estufe o peito, feche as escápulas e puxe a barra." },
                         { nome: "Remada Baixa", video: "10bYGIcOtFs", series: 3, reps: 12, dica: "Costas retas. Traga os cotovelos raspando nas costelas." },
-                        { nome: "Supino com Halteres", video: "", series: 3, reps: 12, dica: "" },
-                        { nome: "Elevação Lateral", video: "", series: 3, reps: 15, dica: "Cotovelos levemente flexionados, até a altura dos ombros." },
-                        { nome: "Rosca Direta", video: "", series: 3, reps: 12, dica: "" },
-                        { nome: "Tríceps Corda", video: "", series: 3, reps: 12, dica: "Abra a corda no final do movimento para contrair bem." },
+                        { nome: "Supino na Máquina", video: "rZ5LTpp79Us", series: 3, reps: 12, dica: "" },
+                        { nome: "Elevação Lateral", video: "7q282CL_DSU", series: 3, reps: 15, dica: "Cotovelos levemente flexionados, até a altura dos ombros." },
+                        { nome: "Rosca Direta", video: "vDWPtEMrzeU", series: 3, reps: 12, dica: "" },
+                        { nome: "Tríceps Corda", video: "4NWWB0f0vzQ", series: 3, reps: 12, dica: "Abra a corda no final do movimento para contrair bem." },
                         { nome: "Série de Abdômen", video: "", series: "Prancha + Infra + Oblíquo", reps: "", dica: "" },
-                        { nome: "Cardio Final", video: "", series: "8-12 Min HIIT", reps: "", dica: "30s rápido / 30s leve" }
+                        { nome: "Cardio Final", video: "", series: "15 min", reps: "", dica: "Esteira inclinada" }
                     ]
                 },
                 C: {
                     nome: "Inferiores C",
                     exercicios: [
-                        { nome: "Agachamento no Smith", video: "", series: 4, reps: 12, dica: "Pés levemente à frente. Agache até as coxas ficarem paralelas." },
+                        { nome: "agachamento hack maquina", video: "yGTQPVdr-UQ", series: 4, reps: 12, dica: "Pés levemente à frente. Agache até as coxas ficarem paralelas." },
                         { nome: "Cadeira Extensora", video: "BmOYMWzmmWM", series: 3, reps: "15 (Drop)", dica: "Na última série, faça drop-set até a falha." },
-                        { nome: "Passada Andando/Lugar", video: "", series: 3, reps: "12 / perna", dica: "" },
-                        { nome: "Glúteo na Polia", video: "", series: 3, reps: 15, dica: "" },
-                        { nome: "Cadeira Abdutora", video: "", series: 3, reps: 15, dica: "" },
-                        { nome: "Panturrilha Sentada", video: "", series: 3, reps: 15, dica: "" },
+                        { nome: "Passada Andando/Lugar", video: "poAnWrA7DSU", series: 3, reps: "12 / perna", dica: "" },
+                        { nome: "Glúteo na Polia", video: "shrmH9DwkQI", series: 3, reps: 15, dica: "" },
+                        { nome: "Cadeira Abdutora", video: "nabhYLtz8Gg", series: 3, reps: 15, dica: "" },
+                        { nome: "Panturrilha Sentada", video: "9fIw0ue8iQE", series: 3, reps: 15, dica: "" },
                         { nome: "Cardio Final", video: "", series: "10 Min", reps: "", dica: "Bike Moderado" }
                     ]
                 },
@@ -682,6 +684,7 @@
 
                 card.appendChild(actions);
 
+                // Setas para visualização em computadores
                 if (index > 0) {
                     const leftArrow = document.createElement('button');
                     leftArrow.className = 'nav-arrow left';
@@ -739,7 +742,13 @@
             window.moverSlide = function(treinoId, direcao) {
                 const container = document.getElementById(`treino${treinoId}`);
                 const cardWidth = container.clientWidth;
-                container.scrollBy({ left: direcao * cardWidth, behavior: 'smooth' });
+                const currentScroll = container.scrollLeft;
+                
+                // Calcula com precisão para qual index pular, evitando pulos duplos
+                let currentIndex = Math.round(currentScroll / cardWidth);
+                const nextIndex = currentIndex + direcao;
+                
+                container.scrollTo({ left: nextIndex * cardWidth, behavior: 'smooth' });
             };
 
             // ==================== ESTADO E SALVAMENTO ====================
@@ -1007,4 +1016,3 @@
     </script>
 </body>
 </html>
-
