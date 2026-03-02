@@ -110,20 +110,70 @@
             background: var(--primary-glow);
         }
 
-        /* ===== VÍDEO VERTICAL CORRIGIDO ===== */
+        /* ===== VÍDEO VERTICAL (THUMBNAIL INTELIGENTE) ===== */
         .video-container {
             flex: 1 1 auto; 
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 200px; /* Garante que o navegador não o encolha para zero */
+            min-height: 200px; 
             margin: 10px 0;
+            position: relative;
         }
+        
+        /* Capa do vídeo antes de clicar */
+        .video-thumbnail {
+            height: 100%;
+            max-height: 100%; 
+            width: auto; 
+            aspect-ratio: 9 / 16; 
+            max-width: 100%;
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+            background-color: #000;
+            box-shadow: 0 6px 15px var(--shadow);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Efeito de escurecer a capa */
+        .video-thumbnail::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+        }
+
+        /* Botão Play falso */
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            z-index: 2;
+            padding-left: 5px; /* Centraliza o ícone de play visualmente */
+            transition: transform 0.2s;
+        }
+        .video-thumbnail:active .play-btn {
+            transform: scale(0.9);
+        }
+
         iframe {
             height: 100%;
             max-height: 100%; 
-            width: auto; /* Deixa a largura calcular baseada na altura e aspect-ratio */
+            width: auto; 
             aspect-ratio: 9 / 16; 
             max-width: 100%;
             border-radius: 16px;
@@ -616,24 +666,30 @@
                 titleDiv.appendChild(editBtn);
                 card.appendChild(titleDiv);
 
-                // SE O EXERCÍCIO TEM VÍDEO, RENDERIZA. SE NÃO, CRIA UM ESPAÇO PARA MANTER O LAYOUT
+                // ==================== LAZY LOAD DOS VÍDEOS ====================
                 if (ex.video && ex.video.trim() !== "") {
                     const videoContainer = document.createElement('div');
                     videoContainer.className = 'video-container';
                     
-                    // Tratamento inteligente caso você cole o link inteiro sem querer no modo de edição
                     let videoId = ex.video.trim();
                     if (videoId.includes('youtu')) {
                         const match = videoId.match(/(?:v=|shorts\/|youtu\.be\/|\/embed\/)([^&?]+)/);
                         if (match) videoId = match[1];
                     }
 
-                    const iframe = document.createElement('iframe');
-                    iframe.src = `https://www.youtube.com/embed/${videoId}?mute=1&playsinline=1&enablejsapi=1&rel=0`;
-                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                    iframe.allowFullscreen = true;
-                    iframe.loading = 'lazy';
-                    videoContainer.appendChild(iframe);
+                    // Cria a capa do vídeo
+                    const thumbDiv = document.createElement('div');
+                    thumbDiv.className = 'video-thumbnail';
+                    // Usa a imagem padrão de alta qualidade do YouTube
+                    thumbDiv.style.backgroundImage = `url('https://img.youtube.com/vi/${videoId}/hqdefault.jpg')`;
+                    thumbDiv.innerHTML = '<div class="play-btn">▶</div>';
+
+                    // Quando clicar, substitui a imagem pelo iframe rodando
+                    thumbDiv.onclick = function() {
+                        videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                    };
+
+                    videoContainer.appendChild(thumbDiv);
                     card.appendChild(videoContainer);
                 } else {
                     const espacoFlexivel = document.createElement('div');
@@ -699,7 +755,6 @@
 
                 card.appendChild(actions);
 
-                // Setas para visualização em computadores
                 if (index > 0) {
                     const leftArrow = document.createElement('button');
                     leftArrow.className = 'nav-arrow left';
@@ -759,7 +814,6 @@
                 const cardWidth = container.clientWidth;
                 const currentScroll = container.scrollLeft;
                 
-                // Calcula com precisão para qual index pular, evitando pulos duplos
                 let currentIndex = Math.round(currentScroll / cardWidth);
                 const nextIndex = currentIndex + direcao;
                 
