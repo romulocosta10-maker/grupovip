@@ -620,7 +620,7 @@
                 videoContainer.className = 'video-container';
                 const iframe = document.createElement('iframe');
                 if (ex.video) {
-                    iframe.src = `https://www.youtube.com/embed/${ex.video}?enablejsapi=1&version=3&rel=0`;
+                    iframe.src = `https://www.youtube.com/embed/${ex.video}?mute=1&enablejsapi=1&version=3&rel=0`;
                 }
                 iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
                 iframe.allowFullscreen = true;
@@ -1016,3 +1016,4 @@
     </script>
 </body>
 </html>
+
