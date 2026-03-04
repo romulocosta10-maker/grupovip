@@ -2,1086 +2,336 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Treino Premium + Completo (Responsivo)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofertas, promoções e achadinhos</title>
+    <meta name="description" content="Receba ofertas reais com até 80% OFF direto no seu WhatsApp.">
+    <meta name="theme-color" content="#ffffff">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    fbq('init', '1492734678636833'); // SEU PIXEL
+    fbq('track', 'PageView');
+
+    // Função para garantir que o Lead dispare antes do redirecionamento
+    function trackLeadAndRedirect(e) {
+        e.preventDefault(); 
+        const url = e.currentTarget.href;
+        
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'Lead');
+        }
+
+        // Pequeno delay de segurança para o Pixel processar
+        setTimeout(function() {
+            window.location.href = url;
+        }, 500);
+    }
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1492734678636833&ev=PageView&noscript=1"
+    /></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* ===== RESET E VARIÁVEIS ===== */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            overflow: hidden; 
-            overscroll-behavior-y: none; 
-            transition: background-color 0.3s, color 0.3s;
-        }
         :root {
-            --bg-main: #f5f5f7;
-            --primary: #ff4081;
-            --primary-glow: rgba(255, 64, 129, 0.15);
+            --primary-bg: #f9f9f9;
+            --card-bg: #ffffff;
             --text-main: #1d1d1f;
-            --text-muted: #86868b;
-            --success: #34c759;
-            --success-glow: rgba(52, 199, 89, 0.15);
-            --card-border: #e5e5ea;
-            --nav-bg: rgba(255, 255, 255, 0.9);
-            --shadow: rgba(0,0,0,0.08);
-            --warning: #ff9500;
-            --warning-glow: rgba(255, 149, 0, 0.15);
-        }
-        body.dark-mode {
-            --bg-main: #1c1c1e;
-            --primary: #ff6b9d;
-            --primary-glow: rgba(255, 107, 157, 0.25);
-            --text-main: #f5f5f7;
-            --text-muted: #98989e;
-            --success: #34c759;
-            --success-glow: rgba(52, 199, 89, 0.25);
-            --card-border: #3a3a3c;
-            --nav-bg: rgba(44, 44, 46, 0.9);
-            --shadow: rgba(255,255,255,0.05);
+            --text-muted: #6e6e73;
+            --whatsapp-green: #25d366;
+            --whatsapp-dark: #128c7e;
+            --accent-orange: #fff7ed;
+            --accent-orange-border: #ffedd5;
+            --accent-orange-text: #c2410c;
         }
 
-        /* ===== LAYOUT PRINCIPAL ===== */
-        .tab-content {
-            display: none;
-            width: 100vw;
-            height: 100dvh;
-            flex-direction: row;
-            overflow-x: auto; 
-            overflow-y: hidden;
-            scroll-snap-type: x mandatory; 
-            scroll-behavior: smooth; 
-            position: relative;
-        }
-        .tab-content::-webkit-scrollbar {
-            display: none;
-        }
-        .tab-content.active {
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Sora', sans-serif;
+            background: linear-gradient(135deg, #FFD18C, #FFBC73, #FFA54F, #FF8C00);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
             display: flex;
-        }
-
-        .exercise-card {
-            scroll-snap-align: start; 
-            scroll-snap-stop: always; 
-            min-width: 100vw;
-            height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
             align-items: center;
-            padding: 10px 15px 85px 15px; 
-            background-color: var(--bg-main);
-            position: relative;
-            transition: background-color 0.4s;
-            overflow: hidden; 
-        }
-        .exercise-card.completed { background-color: rgba(52, 199, 89, 0.05); }
-        .exercise-card.completed h3 { text-decoration: line-through; color: var(--text-muted); }
-        .exercise-card.completed .video-container { opacity: 0.6; }
-
-        .card-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-            padding: 0 5px;
-            flex-shrink: 0;
-        }
-        .counter, .progress-indicator {
-            font-size: 0.8em;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-        .counter {
-            color: var(--text-muted);
-            background: rgba(0,0,0,0.05);
-        }
-        .progress-indicator {
-            color: var(--primary);
-            background: var(--primary-glow);
-        }
-
-        /* ===== VÍDEO VERTICAL (THUMBNAIL INTELIGENTE) ===== */
-        .video-container {
-            flex: 1 1 auto; 
-            width: 100%;
-            display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 200px; 
-            margin: 10px 0;
+            padding: 20px;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 32px;
+            padding: 10px 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px -10px rgba(255, 140, 0, 0.4);
             position: relative;
+        }
+
+        /* Imagem Logo */
+        .logo-container {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+            border-radius: 30px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(245,245,245,0) 70%); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        /* Capa do vídeo antes de clicar */
-        .video-thumbnail {
+        .logo-img {
+            width: 100%;
             height: 100%;
-            max-height: 100%; 
-            width: auto; 
-            aspect-ratio: 9 / 16; 
-            max-width: 100%;
-            border-radius: 16px;
-            background-size: cover;
-            background-position: center;
-            background-color: #000;
-            box-shadow: 0 6px 15px var(--shadow);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Efeito de escurecer a capa */
-        .video-thumbnail::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.3);
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
-        /* Botão Play falso */
-        .play-btn {
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
-            z-index: 2;
-            padding-left: 5px; /* Centraliza o ícone de play visualmente */
-            transition: transform 0.2s;
-        }
-        .video-thumbnail:active .play-btn {
-            transform: scale(0.9);
-        }
-
-        iframe {
-            height: 100%;
-            max-height: 100%; 
-            width: auto; 
-            aspect-ratio: 9 / 16; 
-            max-width: 100%;
-            border-radius: 16px;
-            border: none;
-            box-shadow: 0 6px 15px var(--shadow);
-            background: #000;
-            pointer-events: auto; 
-        }
-
-        .details {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 5px 0;
-            flex-wrap: wrap;
-            flex-shrink: 0; 
-        }
-        .tag {
-            background: var(--nav-bg);
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: 500;
-            color: var(--text-muted);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--card-border);
-        }
-        .tag.highlight {
-            color: var(--primary);
-            background: var(--primary-glow);
-            border-color: transparent;
-            font-weight: 600;
-        }
-        .dica {
-            background: var(--nav-bg);
-            padding: 10px 15px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            color: var(--text-main);
-            width: 100%;
-            max-width: 500px;
-            text-align: left;
-            border-left: 4px solid var(--primary);
-            margin: 5px 0;
-            backdrop-filter: blur(10px);
-            flex-shrink: 0;
-            box-shadow: 0 2px 10px var(--shadow);
-        }
-
-        /* Barra de ações do exercício */
-        .exercise-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 500px;
-            margin-top: 10px;
-            gap: 8px;
-            flex-wrap: nowrap;
-            flex-shrink: 0; 
-        }
-        .check-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            background: var(--nav-bg);
-            border: 2px dashed var(--card-border);
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 0.85em;
-            font-weight: 600;
-            color: var(--text-muted);
-            transition: all 0.2s;
-            backdrop-filter: blur(10px);
-            flex: 1;
-            min-width: 90px;
-        }
-        .check-container input { display: none; }
-        .check-container.active-check {
-            background: var(--success-glow);
-            border-color: var(--success);
-            color: var(--success);
-            border-style: solid;
-        }
-        .carga-container {
-            display: flex;
-            align-items: center;
-            background: var(--nav-bg);
-            border-radius: 16px;
-            padding: 6px;
-            gap: 5px;
-            border: 1px solid var(--card-border);
-            flex-shrink: 0;
-        }
-        .carga-container input {
-            width: 45px;
-            text-align: center;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            color: var(--text-main);
-            font-size: 0.9em;
-            outline: none;
-        }
-        .carga-container button {
-            background: var(--primary-glow);
-            color: var(--primary);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .timer-btn {
-            background: var(--warning-glow);
-            border: 1px solid var(--warning);
-            color: var(--warning);
-            padding: 10px 12px;
-            border-radius: 16px;
-            font-size: 0.8em;
-            font-weight: 600;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            white-space: nowrap;
-            flex-shrink: 0;
-            min-width: 80px;
-        }
-        .timer-active {
-            background: var(--warning);
-            color: white;
-        }
-
-        /* slide final */
-        .slide-final { 
-            justify-content: center; 
-            text-align: center;
-        }
-        .slide-final h2 { font-size: 2em; color: var(--primary); margin-bottom: 10px; }
-        .btn-finalizar {
-            width: 90%;
-            max-width: 300px;
-            padding: 16px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 1.1em;
-            font-weight: 600;
-            margin-top: 25px;
-            cursor: pointer;
-            box-shadow: 0 8px 16px var(--success-glow);
-            flex-shrink: 0;
-        }
-
-        /* setas de navegação desktop */
-        .nav-arrow {
-            display: none; 
-        }
-        @media (min-width: 768px) {
-            .nav-arrow {
-                display: flex;
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                background: var(--nav-bg);
-                border: 1px solid var(--card-border);
-                width: 44px;
-                height: 44px;
-                border-radius: 50%;
-                font-size: 1.2em;
-                color: var(--primary);
-                box-shadow: 0 4px 12px var(--shadow);
-                cursor: pointer;
-                z-index: 20;
-                align-items: center;
-                justify-content: center;
-                transition: 0.2s;
-            }
-            .nav-arrow:active { transform: translateY(-50%) scale(0.9); }
-            .nav-arrow.left { left: 15px; }
-            .nav-arrow.right { right: 15px; }
-        }
-
-        /* menu inferior */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--card-border);
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            padding: 10px 5px;
-            z-index: 100;
-            box-shadow: 0 -5px 20px var(--shadow);
-            padding-bottom: calc(10px + env(safe-area-inset-bottom));
-        }
-        .nav-btn {
-            background: transparent;
-            border: none;
-            min-width: 44px;
-            height: 44px;
-            font-weight: 600;
-            color: var(--text-muted);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 1em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .nav-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 10px var(--primary-glow);
-            transform: translateY(-3px);
-        }
-        #resetBtn, #darkModeToggle, #wakeLockBtn {
-            font-size: 1.2em;
-        }
-
-        /* Aba de estatísticas */
-        #treinoE {
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 20px;
-            padding-bottom: 100px;
-            align-items: center;
-            scroll-snap-type: none; 
-        }
-        .stats-container {
-            width: 100%;
-            max-width: 500px;
-            background: var(--nav-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px var(--shadow);
-        }
-        .stats-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .stat-card {
-            background: rgba(0,0,0,0.02);
-            border-radius: 12px;
-            padding: 15px 10px;
-            text-align: center;
-            border: 1px solid var(--card-border);
-        }
-        .stat-value {
-            font-size: 1.8em;
+        /* Badge Topo */
+        .social-badge {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 13px;
             font-weight: 700;
-            color: var(--primary);
-            display: block;
-        }
-        .stat-label {
-            font-size: 0.8em;
-            color: var(--text-muted);
-            margin-top: 5px;
-            display: block;
-        }
-        .export-import {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            width: 100%;
-            max-width: 500px;
-        }
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 15px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            flex: 1;
-            text-align: center;
-            font-size: 1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* Modal de edição */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            z-index: 300;
+        /* Textos */
+        .tag-novo {
+            display: inline-block;
+            background: var(--accent-orange);
+            color: var(--accent-orange-text);
+            border: 1px solid var(--accent-orange-border);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 24px;
+            padding: 0 10px;
+        }
+        
+        .highlight-red { color: #dc2626; font-weight: 700; }
+
+        /* Grid de Benefícios */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .benefit-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .benefit-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            line-height: 1.2;
+        }
+
+        /* Botão Principal */
+        .btn-whatsapp {
+            display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .modal.active {
-            display: flex;
-        }
-        .modal-content {
-            background: var(--bg-main);
-            padding: 25px;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 400px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .modal-content label {
-            font-size: 0.85em;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-top: 10px;
-            display: block;
-        }
-        .modal-content input, .modal-content textarea {
+            gap: 10px;
             width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            background: var(--nav-bg);
-            color: var(--text-main);
-            font-size: 1em;
-            font-family: 'Poppins', sans-serif;
+            background-color: var(--whatsapp-green);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+            animation: pulseBtn 2s infinite;
         }
+
+        .btn-whatsapp:active { transform: scale(0.98); }
+
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* Urgência */
+        .urgency-box {
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 14px;
+            font-size: 12px;
+            color: #991b1b;
+        }
+
+        /* Prova Social Fundo */
+        .social-proof-bottom {
+            margin-top: 16px;
+            font-size: 13px;
+            color: #334155;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* NOVA MICRO-GARANTIA */
+        .guarantee-container {
+            margin-top: 8px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .guarantee-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .icon-check { width: 14px; height: 14px; color: var(--whatsapp-dark); }
+        .icon-svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
+
     </style>
 </head>
 <body>
-    <div id="treinoA" class="tab-content" data-treino="A"></div>
-    <div id="treinoB" class="tab-content" data-treino="B"></div>
-    <div id="treinoC" class="tab-content" data-treino="C"></div>
-    <div id="treinoD" class="tab-content" data-treino="D"></div>
-    
-    <div id="treinoE" class="tab-content" data-treino="E">
-        <div class="stats-container">
-            <div class="stats-title">📊 Visão Geral</div>
-            <div class="stats-grid">
-                <div class="stat-card"><span class="stat-value" id="totalTreinos">0</span><span class="stat-label">Treinos Totais</span></div>
-                <div class="stat-card"><span class="stat-value" id="diasConsecutivos">0</span><span class="stat-label">Dias Seguidos</span></div>
-                <div class="stat-card"><span class="stat-value" id="treinosSemana">0</span><span class="stat-label">Na Semana</span></div>
-                <div class="stat-card"><span class="stat-value" id="ultimoTreino">-</span><span class="stat-label">Último Treino</span></div>
+
+    <main class="container">
+        
+        <div class="logo-container">
+            <img src="https://i.ibb.co/VpTbXFcv/Chat-GPT-Image-13-de-fev-de-2026-08-52-44-compressed-1-Photoroom-1-1.png" 
+                 alt="Logo Grupo Ofertas" 
+                 class="logo-img"
+                 width="100" height="100"
+                 fetchpriority="high">
+        </div>
+
+        <div class="social-badge">
+            <span style="font-size:8px">🟢</span> +2.000 pessoas economizando hoje
+        </div>
+
+        <div>
+            <h1>Promoção Todo Dia</h1>
+            <p class="subtitle">
+                Acesso exclusivo às melhores promoções diretamente no seu WhatsApp! <span class="highlight-red"></span> 
+            </p>
+        </div>
+
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <svg class="icon-svg" style="color:#333" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2M13 17v2M13 11v2"></path></svg>
+                <span class="benefit-text">Cupons<br>Ocultos</span>
+            </div>
+            <div class="benefit-item">
+                <svg class="icon-svg" style="color:#333" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span class="benefit-text">Ofertas<br>Relâmpago</span>
+            </div>
+            <div class="benefit-item">
+                <svg class="icon-svg" style="color:#333" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+                <span class="benefit-text">Lojas<br>Confiáveis</span>
             </div>
         </div>
-        <div class="stats-container">
-            <div class="stats-title">📅 Histórico Recente</div>
-            <div id="historicoList"></div>
-        </div>
-        <div class="export-import">
-            <button class="btn" id="exportarBtn">📤 Exportar</button>
-            <button class="btn" id="importarBtn">📥 Importar</button>
-        </div>
-    </div>
 
-    <nav class="bottom-nav">
-        <button class="nav-btn active" data-treino="A">A</button>
-        <button class="nav-btn" data-treino="B">B</button>
-        <button class="nav-btn" data-treino="C">C</button>
-        <button class="nav-btn" data-treino="D">D</button>
-        <div style="width: 1px; height: 30px; background: var(--card-border); margin: 0 5px;"></div>
-        <button class="nav-btn" data-treino="E">📊</button>
-        <button class="nav-btn" id="darkModeToggle" title="Modo escuro">🌙</button>
-        <button class="nav-btn" id="wakeLockBtn" title="Manter tela acesa">🔆</button>
-        <button class="nav-btn" id="resetBtn" title="Resetar progresso do treino">↺</button>
-    </nav>
+        <a href="https://chat.whatsapp.com/JTZUIVJuYqjGDRUgzTuKdZ" 
+           onclick="trackLeadAndRedirect(event)" 
+           class="btn-whatsapp">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Entrar e Pagar Menos
+        </a>
 
-    <div class="modal" id="editModal">
-        <div class="modal-content">
-            <h3 style="margin-bottom: 15px; color: var(--primary);">Editar Exercício</h3>
-            <label>Nome do Exercício</label>
-            <input type="text" id="editNome">
-            <label>Vídeo ID (YouTube)</label>
-            <input type="text" id="editVideo" placeholder="Ex: yuIdTWl3oJ8">
-            <label>Séries</label>
-            <input type="text" id="editSeries">
-            <label>Repetições</label>
-            <input type="text" id="editReps">
-            <label>Dica / Observação</label>
-            <textarea id="editDica" rows="3"></textarea>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn" id="saveEdit">Salvar</button>
-                <button class="btn" style="background: var(--card-border); color: var(--text-main);" id="cancelEdit">Cancelar</button>
+        <div class="urgency-box">
+            <b>⚠️  Vagas limitadas! Entre agora!</b> <br>
+            
+        </div>
+
+        <div class="social-proof-bottom">
+            <svg class="icon-svg" style="width:18px;height:18px" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 5.74"></path></svg>
+            Mais de 2.000 membros ativos
+        </div>
+
+        <div class="guarantee-container">
+            <div class="guarantee-badge">
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                100% Gratuito
+            </div>
+            <div class="guarantee-badge">
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Compra Segura
+            </div>
+            <div class="guarantee-badge">
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Sair quando quiser
             </div>
         </div>
-    </div>
 
-    <script>
-        (function() {
-            // ==================== BASE DE DADOS DOS TREINOS ====================
-            let treinos = {
-                A: {
-                    nome: "Inferiores A",
-                    exercicios: [
-                        { nome: "Leg Press 45°", video: "yuIdTWl3oJ8", series: 4, reps: 12, dica: "Mantenha os joelhos alinhados. Não estique totalmente no final." },
-                        { nome: "Mesa Flexora", video: "BmOYMWzmmWM", series: 4, reps: "12 a 15", dica: "Apoie bem o quadril. Movimento só da perna, sem tranco." },
-                        { nome: "Elevação Pélvica", video: "ysWdBc1a1FA", series: 4, reps: 12, dica: "Olhe para frente. Segure 2s em cima esmagando o glúteo." },
-                        { nome: "Afundo no Lugar", video: "poAnWrA7DSU", series: 3, reps: "12 / perna", dica: "Tronco inclinado à frente. Força no calcanhar da perna da frente." },
-                        { nome: "Cadeira Abdutora", video: "nabhYLtz8Gg", series: 3, reps: 15, dica: "Abra com explosão, feche controlando o peso." },
-                        { nome: "Panturrilha em Pé", video: "9fIw0ue8iQE", series: 3, reps: 15, dica: "" },
-                        { nome: "Cardio Final", video: "VBMqOiiIZAA", series: "10 Min", reps: "", dica: "Esteira Inclinada/Escada" }
-                    ]
-                },
-                B: {
-                    nome: "Superiores B",
-                    exercicios: [
-                        { nome: "Puxada na Frente", video: "GjxRBJIOkJk", series: 3, reps: 12, dica: "Estufe o peito, feche as escápulas e puxe a barra." },
-                        { nome: "Remada Baixa", video: "10bYGIcOtFs", series: 3, reps: 12, dica: "Costas retas. Traga os cotovelos raspando nas costelas." },
-                        { nome: "Supino na Máquina", video: "rZ5LTpp79Us", series: 3, reps: 12, dica: "" },
-                        { nome: "Elevação Lateral", video: "7q282CL_DSU", series: 3, reps: 15, dica: "Cotovelos levemente flexionados, até a altura dos ombros." },
-                        { nome: "Rosca Direta", video: "vDWPtEMrzeU", series: 3, reps: 12, dica: "" },
-                        { nome: "Tríceps Corda", video: "4NWWB0f0vzQ", series: 3, reps: 12, dica: "Abra a corda no final do movimento para contrair bem." },
-                        { nome: "Série de Abdômen", video: "", series: "Prancha + Infra + Oblíquo", reps: "", dica: "" },
-                        { nome: "Cardio Final", video: "", series: "15 min", reps: "", dica: "Esteira inclinada" }
-                    ]
-                },
-                C: {
-                    nome: "Inferiores C",
-                    exercicios: [
-                        { nome: "agachamento hack maquina", video: "yGTQPVdr-UQ", series: 4, reps: 12, dica: "Pés levemente à frente. Agache até as coxas ficarem paralelas." },
-                        { nome: "Cadeira Extensora", video: "BmOYMWzmmWM", series: 3, reps: "15 (Drop)", dica: "Na última série, faça drop-set até a falha." },
-                        { nome: "Passada Andando/Lugar", video: "poAnWrA7DSU", series: 3, reps: "12 / perna", dica: "" },
-                        { nome: "Glúteo na Polia", video: "shrmH9DwkQI", series: 3, reps: 15, dica: "" },
-                        { nome: "Cadeira Abdutora", video: "nabhYLtz8Gg", series: 3, reps: 15, dica: "" },
-                        { nome: "Panturrilha Sentada", video: "9fIw0ue8iQE", series: 3, reps: 15, dica: "" },
-                        { nome: "Cardio Final", video: "", series: "10 Min", reps: "", dica: "Bike Moderado" }
-                    ]
-                },
-                D: {
-                    nome: "Metabólico D",
-                    exercicios: [
-                        { nome: "Circuito Alta Queima", video: "", series: "3 a 4 Voltas", reps: "1 min desc.", dica: "• 15 Agachamentos\n• 12 Flexões\n• 20 Polichinelos\n• 15 Stiff\n• 20 Abdominais\n• 30s Prancha" },
-                        { nome: "Cardio Final", video: "", series: "15 Min", reps: "", dica: "Cardio Moderado" }
-                    ]
-                }
-            };
-
-            // ==================== DADOS ADICIONAIS ====================
-            let cargas = {}; 
-            let historico = []; 
-            let wakeLock = null;
-            let timers = {}; 
-
-            // ==================== FUNÇÕES DE RENDERIZAÇÃO ====================
-            function construirExercicio(ex, index, total, treinoId) {
-                const card = document.createElement('div');
-                card.className = 'exercise-card';
-                card.dataset.index = index;
-                card.dataset.treino = treinoId;
-
-                const header = document.createElement('div');
-                header.className = 'card-header';
-                header.innerHTML = `<span class="counter">${index+1} de ${total}</span>
-                                    <span class="progress-indicator" id="progress-${treinoId}-${index}">0/${total}</span>`;
-                card.appendChild(header);
-
-                const titleDiv = document.createElement('div');
-                titleDiv.style.display = 'flex';
-                titleDiv.style.alignItems = 'center';
-                titleDiv.style.justifyContent = 'space-between';
-                titleDiv.style.width = '100%';
-                titleDiv.style.maxWidth = '500px';
-                
-                const h3 = document.createElement('h3');
-                h3.textContent = ex.nome;
-                titleDiv.appendChild(h3);
-                
-                const editBtn = document.createElement('button');
-                editBtn.innerHTML = '✏️';
-                editBtn.style.background = 'transparent';
-                editBtn.style.border = 'none';
-                editBtn.style.fontSize = '1.2em';
-                editBtn.style.cursor = 'pointer';
-                editBtn.onclick = () => abrirModalEdicao(treinoId, index);
-                titleDiv.appendChild(editBtn);
-                card.appendChild(titleDiv);
-
-                // ==================== LAZY LOAD DOS VÍDEOS ====================
-                if (ex.video && ex.video.trim() !== "") {
-                    const videoContainer = document.createElement('div');
-                    videoContainer.className = 'video-container';
-                    
-                    let videoId = ex.video.trim();
-                    if (videoId.includes('youtu')) {
-                        const match = videoId.match(/(?:v=|shorts\/|youtu\.be\/|\/embed\/)([^&?]+)/);
-                        if (match) videoId = match[1];
-                    }
-
-                    // Cria a capa do vídeo
-                    const thumbDiv = document.createElement('div');
-                    thumbDiv.className = 'video-thumbnail';
-                    // Usa a imagem padrão de alta qualidade do YouTube
-                    thumbDiv.style.backgroundImage = `url('https://img.youtube.com/vi/${videoId}/hqdefault.jpg')`;
-                    thumbDiv.innerHTML = '<div class="play-btn">▶</div>';
-
-                    // Quando clicar, substitui a imagem pelo iframe rodando
-                    thumbDiv.onclick = function() {
-                        videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-                    };
-
-                    videoContainer.appendChild(thumbDiv);
-                    card.appendChild(videoContainer);
-                } else {
-                    const espacoFlexivel = document.createElement('div');
-                    espacoFlexivel.style.flex = "1 1 auto";
-                    espacoFlexivel.style.width = "100%";
-                    espacoFlexivel.style.minHeight = "100px";
-                    card.appendChild(espacoFlexivel);
-                }
-
-                const details = document.createElement('div');
-                details.className = 'details';
-                if (ex.series) details.innerHTML += `<span class="tag">${ex.series} Séries</span>`;
-                if (ex.reps) details.innerHTML += `<span class="tag highlight">${ex.reps} Reps</span>`;
-                card.appendChild(details);
-
-                if (ex.dica) {
-                    const dica = document.createElement('div');
-                    dica.className = 'dica';
-                    dica.innerHTML = `💡 ${ex.dica.replace(/\n/g, '<br>')}`;
-                    card.appendChild(dica);
-                }
-
-                const actions = document.createElement('div');
-                actions.className = 'exercise-actions';
-
-                const label = document.createElement('label');
-                label.className = 'check-container';
-                label.innerHTML = `<input type="checkbox" data-treino="${treinoId}" data-exercicio="${index}">
-                                  <span class="icon" style="margin-right: 5px;">⭕</span>
-                                  <span class="text">Feito</span>`;
-                actions.appendChild(label);
-
-                const cargaDiv = document.createElement('div');
-                cargaDiv.className = 'carga-container';
-                const menosBtn = document.createElement('button');
-                menosBtn.textContent = '−';
-                const cargaInput = document.createElement('input');
-                cargaInput.type = 'number';
-                cargaInput.min = '0';
-                cargaInput.step = '0.5';
-                cargaInput.value = cargas[`${treinoId}-${index}`] || '';
-                cargaInput.placeholder = 'kg';
-                const maisBtn = document.createElement('button');
-                maisBtn.textContent = '+';
-                
-                menosBtn.onclick = () => { cargaInput.value = (parseFloat(cargaInput.value)||0) - 1; cargaInput.dispatchEvent(new Event('input')); };
-                maisBtn.onclick = () => { cargaInput.value = (parseFloat(cargaInput.value)||0) + 1; cargaInput.dispatchEvent(new Event('input')); };
-                cargaInput.addEventListener('input', function() {
-                    cargas[`${treinoId}-${index}`] = this.value;
-                    salvarEstado();
-                });
-
-                cargaDiv.appendChild(menosBtn);
-                cargaDiv.appendChild(cargaInput);
-                cargaDiv.appendChild(maisBtn);
-                actions.appendChild(cargaDiv);
-
-                const timerBtn = document.createElement('button');
-                timerBtn.className = 'timer-btn';
-                timerBtn.textContent = '⏱️ 60s';
-                timerBtn.onclick = () => iniciarTimer(timerBtn, treinoId, index);
-                actions.appendChild(timerBtn);
-
-                card.appendChild(actions);
-
-                if (index > 0) {
-                    const leftArrow = document.createElement('button');
-                    leftArrow.className = 'nav-arrow left';
-                    leftArrow.innerHTML = '❮';
-                    leftArrow.onclick = () => moverSlide(treinoId, -1);
-                    card.appendChild(leftArrow);
-                }
-                if (index < total - 1) {
-                    const rightArrow = document.createElement('button');
-                    rightArrow.className = 'nav-arrow right';
-                    rightArrow.innerHTML = '❯';
-                    rightArrow.onclick = () => moverSlide(treinoId, 1);
-                    card.appendChild(rightArrow);
-                }
-
-                return card;
-            }
-
-            function construirFinal(treinoId, total) {
-                const card = document.createElement('div');
-                card.className = 'exercise-card slide-final';
-                card.dataset.index = total;
-                card.dataset.treino = treinoId;
-
-                if (total > 0) {
-                    const leftArrow = document.createElement('button');
-                    leftArrow.className = 'nav-arrow left';
-                    leftArrow.innerHTML = '❮';
-                    leftArrow.onclick = () => moverSlide(treinoId, -1);
-                    card.appendChild(leftArrow);
-                }
-
-                card.innerHTML += `
-                    <h2>Tudo Pronto!</h2>
-                    <p style="color: var(--text-muted); font-size: 1em; max-width: 250px;">Você concluiu o Treino ${treinoId}.</p>
-                    <button class="btn-finalizar" onclick="finalizarTreino('Treino ${treinoId}')">Finalizar Treino 🏆</button>
-                `;
-                return card;
-            }
-
-            function renderizarTodosTreinos() {
-                for (let [id, treino] of Object.entries(treinos)) {
-                    const container = document.getElementById(`treino${id}`);
-                    container.innerHTML = '';
-                    const total = treino.exercicios.length;
-                    treino.exercicios.forEach((ex, i) => {
-                        container.appendChild(construirExercicio(ex, i, total, id));
-                    });
-                    container.appendChild(construirFinal(id, total));
-                }
-                atualizarTodosContadores();
-            }
-
-            // ==================== NAVEGAÇÃO ====================
-            window.moverSlide = function(treinoId, direcao) {
-                const container = document.getElementById(`treino${treinoId}`);
-                const cardWidth = container.clientWidth;
-                const currentScroll = container.scrollLeft;
-                
-                let currentIndex = Math.round(currentScroll / cardWidth);
-                const nextIndex = currentIndex + direcao;
-                
-                container.scrollTo({ left: nextIndex * cardWidth, behavior: 'smooth' });
-            };
-
-            // ==================== ESTADO E SALVAMENTO ====================
-            const STORAGE_KEY = 'treinoAppCompleto';
-
-            function salvarEstado() {
-                const estado = {
-                    treinos: treinos,
-                    cargas: cargas,
-                    historico: historico,
-                    treinoAtivo: document.querySelector('.tab-content.active')?.id.replace('treino', '') || 'A',
-                    concluido: {}
-                };
-                for (let id of ['A','B','C','D']) {
-                    estado.concluido[id] = [];
-                    const container = document.getElementById(`treino${id}`);
-                    if (!container) continue;
-                    container.querySelectorAll('.exercise-card:not(.slide-final) input[type="checkbox"]').forEach((cb, idx) => {
-                        if (cb.checked) estado.concluido[id].push(idx);
-                    });
-                }
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(estado));
-                atualizarTodosContadores();
-                atualizarEstatisticas();
-            }
-
-            function carregarEstado() {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (!saved) return;
-                try {
-                    const estado = JSON.parse(saved);
-                    if (estado.treinos) treinos = estado.treinos;
-                    if (estado.cargas) cargas = estado.cargas;
-                    if (estado.historico) historico = estado.historico;
-
-                    renderizarTodosTreinos();
-
-                    if (estado.treinoAtivo) {
-                        const botoes = document.querySelectorAll('.nav-btn[data-treino]');
-                        botoes.forEach(btn => {
-                            if (btn.dataset.treino === estado.treinoAtivo) {
-                                mudarTreino(estado.treinoAtivo, btn);
-                            }
-                        });
-                    }
-
-                    for (let [id, indices] of Object.entries(estado.concluido || {})) {
-                        const container = document.getElementById(`treino${id}`);
-                        if (!container) continue;
-                        container.querySelectorAll('.exercise-card:not(.slide-final) input[type="checkbox"]').forEach((cb, idx) => {
-                            if (indices.includes(idx)) {
-                                cb.checked = true;
-                                atualizarCheckboxUI(cb);
-                            }
-                        });
-                    }
-                } catch (e) {}
-            }
-
-            function atualizarCheckboxUI(checkbox) {
-                const label = checkbox.closest('.check-container');
-                const card = checkbox.closest('.exercise-card');
-                if (!label || !card) return;
-                if (checkbox.checked) {
-                    card.classList.add('completed');
-                    label.classList.add('active-check');
-                    label.querySelector('.icon').innerHTML = '✅';
-                    label.querySelector('.text').innerText = 'Feito!';
-                    vibrar(50);
-                } else {
-                    card.classList.remove('completed');
-                    label.classList.remove('active-check');
-                    label.querySelector('.icon').innerHTML = '⭕';
-                    label.querySelector('.text').innerText = 'Feito';
-                }
-            }
-
-            function atualizarTodosContadores() {
-                for (let id of ['A','B','C','D']) {
-                    const container = document.getElementById(`treino${id}`);
-                    if (!container) continue;
-                    const total = container.querySelectorAll('.exercise-card:not(.slide-final)').length;
-                    const feitos = container.querySelectorAll('.exercise-card:not(.slide-final) input[type="checkbox"]:checked').length;
-                    
-                    container.querySelectorAll('.progress-indicator').forEach(ind => {
-                        ind.innerText = `${feitos}/${total}`;
-                    });
-                }
-            }
-
-            // ==================== HISTÓRICO ====================
-            function registrarTreinoFinalizado(treinoId) {
-                const hoje = new Date().toISOString().split('T')[0];
-                historico.push({ data: hoje, treino: treinoId, nome: treinos[treinoId].nome });
-                salvarEstado();
-                atualizarEstatisticas();
-            }
-
-            function atualizarEstatisticas() {
-                document.getElementById('totalTreinos').innerText = historico.length;
-                let streak = 0;
-                const datas = [...new Set(historico.map(h => h.data))].sort().reverse();
-                let hoje = new Date().toISOString().split('T')[0];
-                for (let i = 0; i < datas.length; i++) {
-                    if (datas[i] === hoje) {
-                        streak++;
-                        hoje = new Date(new Date(hoje).setDate(new Date(hoje).getDate() - 1)).toISOString().split('T')[0];
-                    } else break;
-                }
-                document.getElementById('diasConsecutivos').innerText = streak;
-
-                const inicioSemana = new Date();
-                inicioSemana.setDate(inicioSemana.getDate() - inicioSemana.getDay() + 1);
-                const fimSemana = new Date(inicioSemana);
-                fimSemana.setDate(fimSemana.getDate() + 6);
-                const semana = historico.filter(h => {
-                    const d = new Date(h.data);
-                    return d >= inicioSemana && d <= fimSemana;
-                }).length;
-                document.getElementById('treinosSemana').innerText = semana;
-
-                if (historico.length > 0) {
-                    document.getElementById('ultimoTreino').innerText = historico[historico.length-1].treino;
-                } else {
-                    document.getElementById('ultimoTreino').innerText = '-';
-                }
-
-                const lista = document.getElementById('historicoList');
-                lista.innerHTML = historico.slice(-10).reverse().map(h => 
-                    `<div style="padding: 10px; border-bottom: 1px solid var(--card-border); color: var(--text-main); font-size: 0.9em;">${h.data.split('-').reverse().join('/')} - Treino ${h.treino}</div>`
-                ).join('');
-            }
-
-            // ==================== UTILITÁRIOS ====================
-            function iniciarTimer(botao, treinoId, exercicioIndex) {
-                if (timers[`${treinoId}-${exercicioIndex}`]) {
-                    clearTimeout(timers[`${treinoId}-${exercicioIndex}`].timeout);
-                    delete timers[`${treinoId}-${exercicioIndex}`];
-                    botao.classList.remove('timer-active');
-                    botao.textContent = '⏱️ 60s';
-                    return;
-                }
-                botao.classList.add('timer-active');
-                let segundos = 60;
-                botao.textContent = `⏱️ ${segundos}s`;
-                const intervalo = setInterval(() => {
-                    segundos--;
-                    botao.textContent = `⏱️ ${segundos}s`;
-                    if (segundos <= 0) {
-                        clearInterval(intervalo);
-                        botao.classList.remove('timer-active');
-                        botao.textContent = '⏱️ 60s';
-                        vibrar(200);
-                        delete timers[`${treinoId}-${exercicioIndex}`];
-                    }
-                }, 1000);
-                timers[`${treinoId}-${exercicioIndex}`] = { timeout: intervalo };
-            }
-
-            function vibrar(ms) {
-                if ('vibrate' in navigator) navigator.vibrate(ms);
-            }
-
-            async function toggleWakeLock() {
-                if (wakeLock) {
-                    await wakeLock.release();
-                    wakeLock = null;
-                    document.getElementById('wakeLockBtn').style.color = '';
-                } else {
-                    try {
-                        wakeLock = await navigator.wakeLock.request('screen');
-                        document.getElementById('wakeLockBtn').style.color = 'var(--warning)';
-                    } catch (err) {
-                        alert('Recurso não suportado no navegador.');
-                    }
-                }
-            }
-
-            // ==================== INTERAÇÕES DE SISTEMA ====================
-            window.finalizarTreino = function(nomeTreino) {
-                const treinoId = nomeTreino.replace('Treino ', '');
-                registrarTreinoFinalizado(treinoId);
-                alert(`🎉 PARABÉNS! 🎉\n\nVocê finalizou o ${nomeTreino}!`);
-            };
-
-            function mudarTreino(treinoId, botao) {
-                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-                document.getElementById(`treino${treinoId}`).classList.add('active');
-                document.querySelectorAll('.nav-btn[data-treino]').forEach(btn => btn.classList.remove('active'));
-                if (botao) botao.classList.add('active');
-                salvarEstado();
-            }
-
-            let editandoTreino = null, editandoIndex = null;
-            function abrirModalEdicao(treinoId, index) {
-                editandoTreino = treinoId;
-                editandoIndex = index;
-                const ex = treinos[treinoId].exercicios[index];
-                document.getElementById('editNome').value = ex.nome || '';
-                document.getElementById('editVideo').value = ex.video || '';
-                document.getElementById('editSeries').value = ex.series || '';
-                document.getElementById('editReps').value = ex.reps || '';
-                document.getElementById('editDica').value = ex.dica || '';
-                document.getElementById('editModal').classList.add('active');
-            }
-
-            document.getElementById('saveEdit').addEventListener('click', () => {
-                if (editandoTreino && editandoIndex !== null) {
-                    treinos[editandoTreino].exercicios[editandoIndex] = {
-                        nome: document.getElementById('editNome').value,
-                        video: document.getElementById('editVideo').value,
-                        series: document.getElementById('editSeries').value,
-                        reps: document.getElementById('editReps').value,
-                        dica: document.getElementById('editDica').value
-                    };
-                    renderizarTodosTreinos();
-                    salvarEstado();
-                    document.getElementById('editModal').classList.remove('active');
-                }
-            });
-
-            document.getElementById('cancelEdit').addEventListener('click', () => {
-                document.getElementById('editModal').classList.remove('active');
-            });
-
-            // ==================== EVENT LISTNERS ====================
-            renderizarTodosTreinos();
-            carregarEstado();
-            atualizarEstatisticas();
-
-            document.addEventListener('change', function(e) {
-                if (e.target.matches('.check-container input[type="checkbox"]')) {
-                    atualizarCheckboxUI(e.target);
-                    salvarEstado();
-                }
-            });
-
-            document.querySelectorAll('.nav-btn[data-treino]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    mudarTreino(this.dataset.treino, this);
-                });
-            });
-
-            document.getElementById('resetBtn').addEventListener('click', function() {
-                const treinoAtivo = document.querySelector('.tab-content.active')?.id.replace('treino', '');
-                if (!treinoAtivo || treinoAtivo === 'E') return;
-                if (confirm(`Resetar todo o progresso do Treino ${treinoAtivo}?`)) {
-                    const container = document.getElementById(`treino${treinoAtivo}`);
-                    container.querySelectorAll('.exercise-card:not(.slide-final) input[type="checkbox"]').forEach(cb => {
-                        cb.checked = false;
-                        atualizarCheckboxUI(cb);
-                    });
-                    salvarEstado();
-                }
-            });
-
-            document.getElementById('darkModeToggle').addEventListener('click', function() {
-                document.body.classList.toggle('dark-mode');
-                this.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-            });
-
-            document.getElementById('wakeLockBtn').addEventListener('click', toggleWakeLock);
-
-        })();
-    </script>
+    </main>
 </body>
 </html>
